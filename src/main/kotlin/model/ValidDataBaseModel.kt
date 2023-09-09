@@ -8,8 +8,8 @@ class ValidDataBaseModel {
         private val connection = Connect().creatConnect()
 
         // Validar ID
-        fun isValidAuthorId(id: Int): Boolean {
-            val sql = "SELECT COUNT(*) FROM author WHERE id=?"
+        fun isValidStudentId(id: Int): Boolean {
+            val sql = "SELECT COUNT(*) FROM students WHERE id=?"
 
             try {
                 val preparedStatement = connection.prepareStatement(sql)
@@ -29,8 +29,8 @@ class ValidDataBaseModel {
             return false
         }
 
-        fun isValidBookId(id: Int): Boolean {
-            val sql = "SELECT COUNT(*) FROM book WHERE id=?"
+        fun isValidTeacherId(id: Int): Boolean {
+            val sql = "SELECT COUNT(*) FROM teachers WHERE id=?"
 
             try {
                 val preparedStatement = connection.prepareStatement(sql)
@@ -50,8 +50,8 @@ class ValidDataBaseModel {
             return false
         }
 
-        fun isValidUserId(id: Int): Boolean {
-            val sql = "SELECT COUNT(*) FROM users WHERE id=?"
+        fun isValidCourseId(id: Int): Boolean {
+            val sql = "SELECT COUNT(*) FROM courses WHERE id=?"
 
             try {
                 val preparedStatement = connection.prepareStatement(sql)
@@ -71,8 +71,28 @@ class ValidDataBaseModel {
             return false
         }
 
-        fun isValidLoanId(id: Int): Boolean {
-            val sql = "SELECT COUNT(*) FROM loan_book WHERE id = ?"
+        fun isValidEnrollmentId(id: Int): Boolean {
+            val sql = "SELECT COUNT(*) FROM enrollments WHERE id = ?"
+
+            try {
+                val preparedStatement = connection.prepareStatement(sql)
+                preparedStatement.setInt(1, id)
+                val resultSet = preparedStatement.executeQuery()
+                resultSet.next()
+                val count = resultSet.getInt(1)
+
+                resultSet.close()
+                preparedStatement.close()
+
+                return count > 0
+            } catch (e: SQLException) {
+                e.printStackTrace()
+            }
+
+            return false
+        }
+        fun isValidAdministratorId(id: Int): Boolean {
+            val sql = "SELECT COUNT(*) FROM courses WHERE id=?"
 
             try {
                 val preparedStatement = connection.prepareStatement(sql)
@@ -92,96 +112,41 @@ class ValidDataBaseModel {
             return false
         }
 
-        //Validar Indormações nulas ou vazias
-        fun isValidBookInfo(nameBook: String, author: String): Boolean {
-            return nameBook.isNotBlank() && author.isNotBlank()
+//        //Validar Indormações nulas ou vazias
+        fun isValidStudentInfo(name_student: String, date_of_birth: String, addrss: String): Boolean {
+            return name_student.isNotBlank() && date_of_birth.isNotBlank() && addrss.isNotBlank()
+        }
+        fun isValidTeacherInfo(name_teacher: String, discipline: String): Boolean {
+            return name_teacher.isNotBlank() && discipline.isNotBlank()
+        }
+        fun isValidCoursesInfo(name_course: String): Boolean {
+            return name_course.isNotBlank()
+        }
+        fun isValidEnrollmentInfo(enrollment_date: String): Boolean{
+            return enrollment_date.isNotBlank()
+        }
+        fun isValidAdministratorInfo(name: String, email: String): Boolean{
+            return name.isNotBlank() && email.isNotBlank()
         }
 
-        fun isValidUserInfo(cpf: String, alias: String, email: String): Boolean {
-            return cpf.isNotBlank() && alias.isNotBlank() && email.isNotBlank()
-        }
-
-        fun isValidAuthorInfo(name_author: String): Boolean {
-            return name_author.isNotBlank()
-        }
-
-        // Validar entrada de email
+       // Validar entrada de email
         fun isValidEmail(email: String): Boolean {
             return email.contains("@") && email.endsWith("@gmail.com")
         }
 
-        // Validar se ja existe emprestimo com um livro especifico
-        fun isBookAlreadyLoaned(id_book: Int): Boolean {
-            val sql = "SELECT COUNT(*) FROM loan_book WHERE id = ?"
 
-            try {
-                val preparedStatement = connection.prepareStatement(sql)
-                preparedStatement.setInt(1, id_book)
-                val resultSet = preparedStatement.executeQuery()
-                resultSet.next()
-                val count = resultSet.getInt(1)
-
-                resultSet.close()
-                preparedStatement.close()
-
-                return count > 0
-            } catch (e: SQLException) {
-                e.printStackTrace()
-            }
-
-            return false
-        }
-
-        // Validar crdencial de Usuario e Bibliotecario
-        private fun isAdmin(alias: String): Boolean {
-            return alias == "José"
-        }
-
-        fun isValidLibrarianCredentials(alias: String, cpf: String): Boolean {
-            if (alias.isBlank() || cpf.isBlank()) {
-                throw IllegalArgumentException("O nome de usuário e a senha não podem estar vazios.")
-            }
-
-            if (isAdmin(alias)) {
-                val sql = "SELECT COUNT(*) FROM users WHERE alias=? AND cpf=?"
-
-                try {
-                    val preparedStatement = connection.prepareStatement(sql)
-                    preparedStatement.setString(1, alias)
-                    preparedStatement.setString(2, cpf)
-                    val resultSet = preparedStatement.executeQuery()
-                    resultSet.next()
-                    val count = resultSet.getInt(1)
-
-                    resultSet.close()
-                    preparedStatement.close()
-
-                    if (count > 0) {
-                        return true
-                    } else {
-                        throw IllegalArgumentException("Credenciais de administrador inválidas.")
-                    }
-                } catch (e: SQLException) {
-                    e.printStackTrace()
-                    throw RuntimeException("Erro ao verificar as credenciais do usuário.")
-                }
-            } else {
-                throw IllegalArgumentException("Acesso não autorizado. Você não é um administrador.")
-            }
-        }
-
-        fun isValidUserCredentials(alias: String, cpf: String): Boolean {
-            if (alias.isBlank() || cpf.isBlank()) {
-                println("O nome de usuário e a senha não podem estar vazios.")
+        fun isValidAdminCredentials(email_user: String, password_user: Int): Boolean {
+            if (email_user.isBlank()) {
+                println("O email do usuário e a senha não podem estar vazios.")
                 return false
             }
 
-            val sql = "SELECT COUNT(*) FROM users WHERE alias=? AND cpf=?"
+            val sql = "SELECT COUNT(*) FROM administrator WHERE email_user=? AND password_user=?"
 
             try {
                 val preparedStatement = connection.prepareStatement(sql)
-                preparedStatement.setString(1, alias)
-                preparedStatement.setString(2, cpf)
+                preparedStatement.setString(1, email_user)
+                preparedStatement.setInt(2, password_user)
                 val resultSet = preparedStatement.executeQuery()
                 resultSet.next()
                 val count = resultSet.getInt(1)
@@ -197,5 +162,4 @@ class ValidDataBaseModel {
             return false
         }
     }
-
 }

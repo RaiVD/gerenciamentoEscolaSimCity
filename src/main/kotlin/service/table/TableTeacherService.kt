@@ -1,4 +1,4 @@
-package service
+package service.table
 
 import connection.Connect
 import model.ValidDataBaseModel.Companion.isValidTeacherId
@@ -30,11 +30,21 @@ class TableTeacherService {
                 println("ID de professor inválido!")
                 return
             }
-            val sql = "DELETE FROM teachers WHERE id=$id"
 
             try {
-                val statement = connection.createStatement()
-                statement.executeUpdate(sql)
+                // Primeiro, exclua as matrículas associadas ao curso
+                val deleteEnrollmentsSQL = "DELETE FROM enrollments WHERE course_id IN (SELECT id FROM courses WHERE responsible_teacher = $id)"
+                val statement = TableCourseService.connection.createStatement()
+                statement.executeUpdate(deleteEnrollmentsSQL)
+
+                // Em seguida, exclua os cursos associados ao professor
+                val deleteCoursesSQL = "DELETE FROM courses WHERE responsible_teacher = $id"
+                statement.executeUpdate(deleteCoursesSQL)
+
+                // Finalmente, exclua o professor da tabela teachers
+                val deleteTeacherSQL = "DELETE FROM teachers WHERE id = $id"
+                statement.executeUpdate(deleteTeacherSQL)
+
                 println("Professor deletado com sucesso!")
                 statement.close()
             } catch (e: SQLException) {
@@ -42,6 +52,46 @@ class TableTeacherService {
             }
         }
 
+        fun updateTeacher(id: Int, discipline: String) {
+            try {
+                if (!isValidTeacherId(id) || !discipline.isNotBlank()) {
+                    println("ID de professor inválido ou informações inválidas.")
+                    return
+                }
+                val sql = "UPDATE teachers SET discipline = '$discipline' WHERE id = $id"
+
+                val statement = connection.createStatement()
+                val rowsUpdated = statement.executeUpdate(sql)
+
+                if (rowsUpdated > 0) {
+                    println("Professor com ID $id atualizado com sucesso!")
+                } else {
+                    println("Nenhum professor com ID $id encontrado para atualização.")
+                }
+                statement.close()
+            } catch (e: SQLException) {
+                e.printStackTrace()
+            }
+        }
+
+        fun listTeacher() {
+            val statement = connection.createStatement()
+            val resultSet = statement.executeQuery("SELECT id, name_teacher, discipline FROM teachers")
+
+            try {
+                while (resultSet.next()) {
+                    val teacherId = resultSet.getInt("id")
+                    val name_teacher = resultSet.getString("name_teacher")
+                    val discipline = resultSet.getString("discipline")
+
+                    println("ID: $teacherId | Nome do professor: $name_teacher | Disciplina: $discipline")
+                }
+                resultSet.close()
+                statement.close()
+            } catch (e: SQLException) {
+                e.printStackTrace()
+            }
+        }
         fun listSpecificTeacher(id: Int) {
             if (!isValidTeacherId(id)) {
                 println("ID de professor inválido!")

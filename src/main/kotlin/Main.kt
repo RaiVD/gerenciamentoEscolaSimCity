@@ -1,7 +1,30 @@
-fun main(args: Array<String>) {
-    println("Hello World!")
 
-    // Try adding program arguments via Run/Debug configuration.
-    // Learn more about running applications: https://www.jetbrains.com/help/idea/running-applications.html.
-    println("Program arguments: ${args.joinToString()}")
+import service.QueryInDatabaseService
+import service.table.*
+import view.MenuView
+
+fun main() {
+//    val query = QueryInDatabaseService()
+
+//
+//    TableStudentService.listStudent()
+//    println()
+//    TableTeacherService.listTeacher()
+//    println()
+//    TableCourseService.listCourse()
+//    println()
+//    TableEnrollmentService.listEnrollment()
+//    println()
+//    query.getStudentsInCourse("Mobile")
+//    println()
+//    query.getCoursesTaughtByTeacher("Joy")
+//    println()
+//    query.getStudentsNotEnrolledInAnyCourse()
+//    println()
+//    query.getCoursesWithNoEnrollments()
+//    println()
+//    query.getStudentsEnrolledInMultipleCourses()
+    val menuView = MenuView()
+    menuView.start()
+
 }
