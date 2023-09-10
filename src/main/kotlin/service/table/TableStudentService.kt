@@ -3,7 +3,10 @@ package service.table
 import connection.Connect
 import model.ValidDataBaseModel.Companion.isValidStudentId
 import model.ValidDataBaseModel.Companion.isValidStudentInfo
+import model.ValidDataBaseModel.Companion.parseDate
 import java.sql.SQLException
+import java.text.ParseException
+import java.time.format.DateTimeParseException
 
 class TableStudentService {
     companion object{
@@ -15,11 +18,13 @@ class TableStudentService {
                     println("As informações do aluno não pode estar vazio ou nulo.")
                     return
                 }
-                val sql = "INSERT INTO students (name_student, date_of_birth, address) VALUES ('$name_student', '$date_of_birth', '$addrss')"
+                val sql = "INSERT INTO students (name_student, date_of_birth, address) VALUES ('$name_student', '${parseDate(date_of_birth)}', '$addrss')"
 
                 val statement = connection.createStatement()
                 statement.executeUpdate(sql)
                 println("Aluno $name_student adicionado com sucesso!")
+            } catch (e: ParseException) {
+                println("Formato de data inválido. Use o formato DD-MM-AAAA.")
             } catch (e: SQLException) {
                 e.printStackTrace()
             }

@@ -32,7 +32,7 @@ class EnrollmentView {
     fun addEnrollment(){
         val id_Student = inputUserModel.readIntFromUser("ID do aluno: ")
         val id_course = inputUserModel.readIntFromUser("ID do curso: ")
-        val date = inputUserModel.readStringFromUser("Data da matricula (DD/MM/AAAA): ")
+        val date = inputUserModel.readStringFromUser("Data da matricula (DD/MM/YYYY): ")
         TableEnrollmentService.addEnrollment(id_Student, id_course, date)
     }
 

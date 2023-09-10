@@ -31,7 +31,7 @@ class StudentsView {
 
     fun addStudent(){
         val name = inputUserModel.readStringFromUser("Nome do aluno: ")
-        val date_of_birth = inputUserModel.readStringFromUser("Data de nascimento: ")
+        val date_of_birth = inputUserModel.readStringFromUser("Data de nascimento (DD/MM/YYYY): ")
         val address = inputUserModel.readStringFromUser("Endereço: ")
         TableStudentService.addStudent(name, date_of_birth, address)
     }

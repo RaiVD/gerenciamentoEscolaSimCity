@@ -2,6 +2,10 @@ package model
 
 import connection.Connect
 import java.sql.SQLException
+import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.util.*
 
 class ValidDataBaseModel {
     companion object {
@@ -91,6 +95,7 @@ class ValidDataBaseModel {
 
             return false
         }
+
         fun isValidAdministratorId(id: Int): Boolean {
             val sql = "SELECT COUNT(*) FROM courses WHERE id=?"
 
@@ -112,26 +117,35 @@ class ValidDataBaseModel {
             return false
         }
 
-//        //Validar Indormações nulas ou vazias
+        //        //Validar Indormações nulas ou vazias
         fun isValidStudentInfo(name_student: String, date_of_birth: String, addrss: String): Boolean {
             return name_student.isNotBlank() && date_of_birth.isNotBlank() && addrss.isNotBlank()
         }
+
         fun isValidTeacherInfo(name_teacher: String, discipline: String): Boolean {
             return name_teacher.isNotBlank() && discipline.isNotBlank()
         }
+
         fun isValidCoursesInfo(name_course: String): Boolean {
             return name_course.isNotBlank()
         }
-        fun isValidEnrollmentInfo(enrollment_date: String): Boolean{
+
+        fun isValidEnrollmentInfo(enrollment_date: String): Boolean {
             return enrollment_date.isNotBlank()
         }
-        fun isValidAdministratorInfo(name: String, email: String): Boolean{
+
+        fun isValidAdministratorInfo(name: String, email: String): Boolean {
             return name.isNotBlank() && email.isNotBlank()
         }
 
-       // Validar entrada de email
+        // Validar entrada de email
         fun isValidEmail(email: String): Boolean {
             return email.contains("@") && email.endsWith("@gmail.com")
+        }
+
+        fun parseDate(dataString: String): Date? {
+            val formato = SimpleDateFormat("dd/MM/yyyy")
+            return formato.parse(dataString)
         }
 
 
