@@ -4,27 +4,13 @@ import service.table.*
 import view.MenuView
 
 fun main() {
-//    val query = QueryInDatabaseService()
+    // Credencial Admin:
 
-//
-//    TableStudentService.listStudent()
-//    println()
-//    TableTeacherService.listTeacher()
-//    println()
-//    TableCourseService.listCourse()
-//    println()
-//    TableEnrollmentService.listEnrollment()
-//    println()
-//    query.getStudentsInCourse("Mobile")
-//    println()
-//    query.getCoursesTaughtByTeacher("Joy")
-//    println()
-//    query.getStudentsNotEnrolledInAnyCourse()
-//    println()
-//    query.getCoursesWithNoEnrollments()
-//    println()
-//    query.getStudentsEnrolledInMultipleCourses()
+//    id| name_admin | email_user       | password_user |
+//    ===================================================
+//    3 | Ana        | ana@gmail.com    |      1234     |
+//    1 | Raissa     | raissa@gmail.com |      4321     |
+
     val menuView = MenuView()
     menuView.start()
-
 }

@@ -148,7 +148,6 @@ class ValidDataBaseModel {
             return formato.parse(dataString)
         }
 
-
         fun isValidAdminCredentials(email_user: String, password_user: Int): Boolean {
             if (email_user.isBlank()) {
                 println("O email do usuário e a senha não podem estar vazios.")
