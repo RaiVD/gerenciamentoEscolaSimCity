@@ -32,16 +32,13 @@ class TableTeacherService {
             }
 
             try {
-                // Primeiro, exclua as matrículas associadas ao curso
                 val deleteEnrollmentsSQL = "DELETE FROM enrollments WHERE course_id IN (SELECT id FROM courses WHERE responsible_teacher = $id)"
                 val statement = TableCourseService.connection.createStatement()
                 statement.executeUpdate(deleteEnrollmentsSQL)
 
-                // Em seguida, exclua os cursos associados ao professor
                 val deleteCoursesSQL = "DELETE FROM courses WHERE responsible_teacher = $id"
                 statement.executeUpdate(deleteCoursesSQL)
 
-                // Finalmente, exclua o professor da tabela teachers
                 val deleteTeacherSQL = "DELETE FROM teachers WHERE id = $id"
                 statement.executeUpdate(deleteTeacherSQL)
 
