@@ -12,7 +12,7 @@ O sistema inclui as seguintes funcionalidades:
 
 ## Como Executar
 Para executar  Biblioteca SimCity, siga as instruções abaixo:
-### Passos para Execução
+### Passos para Execução:
 Para executar o sistema, siga estas etapas:
 
 1. Clone o repositório para o seu ambiente local.
